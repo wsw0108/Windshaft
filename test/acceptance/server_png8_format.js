@@ -14,12 +14,12 @@ describe('server_png8_format', function() {
     before(function(done) {
         testClientPng8 = new TestClient(layergroup, {
             mapnik: {
-                grainstore: _.extend({mapnik_tile_format: 'png8:m=h'}, TestClient.grainstoreOptions)
+                talkstore: _.extend({mapnik_tile_format: 'png8:m=h'}, TestClient.talkstoreOptions)
             }
         });
         testClientPng32 = new TestClient(layergroup, {
             mapnik: {
-                grainstore: _.extend({mapnik_tile_format: 'png'}, TestClient.grainstoreOptions)
+                talkstore: _.extend({mapnik_tile_format: 'png'}, TestClient.talkstoreOptions)
             }
         });
         var testPngFilesDir = __dirname + '/../results/png';
@@ -124,4 +124,3 @@ describe('server_png8_format', function() {
         });
     });
 });
-

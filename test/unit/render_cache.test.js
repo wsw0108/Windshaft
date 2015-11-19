@@ -15,17 +15,43 @@ describe('render_cache', function() {
     var redisPool = new RedisPool(serverOptions.redis);
 
     var rendererFactory = new RendererFactory({
-        mapnik: {
-            grainstore: serverOptions.grainstore
+        maptalks: {
+            talkstore: serverOptions.talkstore
         }
     });
+
+    var queryFilter = {
+        spatialFilter: {
+            // RELATION_WITHIN
+            relation: 5,
+            geometry: {
+                type: 'Polygon',
+                coordinates: [
+                    [ [-120.0, 84.0], [120.0, 84.0], [120.0, -84.0], [-120.0, -84.0], [-120.0, 84.0] ]
+                ]
+            }
+        },
+        resultCrs: {
+            type: 'cnCoordinateType',
+            properties: {
+                name: 'gcj02'
+            }
+        },
+        resultFields: ['*'],
+        returnGeometry: true
+    };
 
     var mapConfig = MapConfig.create({
         layers: [
             {
-                type: 'mapnik',
+                type: 'maptalks',
                 options: {
-                    sql: 'select 1 id, null::geometry the_geom',
+                    // dbname? use merged?
+                    engine_home: '/home/wsw/repos/profile-node-java',
+                    layer: 'ne_10m_admin_0_countries',
+                    filter: JSON.stringify(queryFilter),
+                    page_num: 0,
+                    page_size: 10,
                     cartocss: '#layer { }',
                     cartocss_version: '2.3.0'
                 }
@@ -36,9 +62,13 @@ describe('render_cache', function() {
     var mapConfig2 = MapConfig.create({
         layers: [
             {
-                type: 'mapnik',
+                type: 'maptalks',
                 options: {
-                    sql: 'select 2 id, null::geometry the_geom',
+                    engine_home: '/home/wsw/repos/profile-node-java',
+                    layer: 'ne_10m_admin_0_countries',
+                    filter: JSON.stringify(queryFilter),
+                    page_num: 1,
+                    page_size: 10,
                     cartocss: '#layer { }',
                     cartocss_version: '2.3.0'
                 }
@@ -50,9 +80,8 @@ describe('render_cache', function() {
 
     function requestParams(params) {
         return _.extend({
-            dbname: "windshaft_test",
+            dbname: "testdb",
             token: mapConfig.id(),
-            dbuser: 'postgres',
             format: 'png',
             layer: undefined,
             scale_factor: 1

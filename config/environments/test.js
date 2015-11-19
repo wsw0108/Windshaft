@@ -3,12 +3,6 @@ var _ = require('underscore');
 var development = require('./development');
 var test = _.extend(development, {
     name: 'test',
-    // Allowed elements in "postgres" config object:
-    // user, host, port, geometry_field, srid
-    postgres: {
-        geometry_field: 'the_geom',
-        srid: 4326
-    },
     millstone: {
         cache_basedir: '/tmp/windshaft-test/millstone'
     },

@@ -14,7 +14,7 @@ describe('windshaft', function() {
 
         var versions = windshaft.versions;
         assert.ok(versions.hasOwnProperty('windshaft'), "No 'windshaft' version in " + versions);
-        assert.ok(versions.hasOwnProperty('grainstore'), "No 'grainstore' version in " + versions);
+        assert.ok(versions.hasOwnProperty('talkstore'), "No 'talkstore' version in " + versions);
         assert.ok(versions.hasOwnProperty('node_mapnik'), "No 'node_mapnik' version in " + versions);
         assert.ok(versions.hasOwnProperty('mapnik'), "No 'mapnik' version in " + versions);
     });

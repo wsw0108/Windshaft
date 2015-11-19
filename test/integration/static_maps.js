@@ -17,8 +17,7 @@ describe('static_maps', function() {
 
     var rendererFactory = new windshaft.renderer.Factory({
         mapnik: {
-            grainstore: {
-                datasource: global.environment.postgres,
+            talkstore: {
                 cachedir: global.environment.millstone.cache_basedir,
                 mapnik_version: global.environment.mapnik_version || mapnik.versions.mapnik,
                 gc_prob: 0 // run the garbage collector at each invocation
@@ -74,6 +73,26 @@ describe('static_maps', function() {
     });
 
     function staticMapConfigProvider(urlTemplate, cartocss) {
+        var queryFilter = {
+            spatialFilter: {
+                // RELATION_WITHIN
+                relation: 5,
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [ [-120.0, 84.0], [120.0, 84.0], [120.0, -84.0], [-120.0, -84.0], [-120.0, 84.0] ]
+                    ]
+                }
+            },
+            resultCrs: {
+                type: 'cnCoordinateType',
+                properties: {
+                    name: 'gcj02'
+                }
+            },
+            resultFields: ['*'],
+            returnGeometry: true
+        };
         var layergroup = {
             version: '1.2.0',
             layers: [
@@ -85,20 +104,23 @@ describe('static_maps', function() {
                     }
                 },
                 {
-                    type: 'mapnik',
+                    type: 'maptalks',
                     options: {
-                        sql: 'SELECT * FROM populated_places_simple_reduced',
+                        engine_home: '/home/wsw/repos/profile-node-java',
+                        layer: 'ne_10m_admin_0_countries',
+                        filter: JSON.stringify(queryFilter),
+                        page_num: 0,
+                        page_size: 10,
                         cartocss: cartocss || '#layer { marker-fill:red; } #layer { marker-width: 2; }',
-                        cartocss_version: '2.3.0'
+                        cartocss_version: '2.0.2'
                     }
                 }
             ]
         };
         var mapConfig = windshaft.model.MapConfig.create(layergroup);
         var defaultParams = {
-            dbname: 'windshaft_test',
+            dbname: 'testdb',
             token: crypto.createHash('md5').update(JSON.stringify(layergroup)).digest('hex'),
-            dbuser: 'postgres',
             format: 'png',
             layer: 'all'
         };

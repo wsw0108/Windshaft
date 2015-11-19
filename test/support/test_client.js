@@ -16,18 +16,16 @@ var cartoEnv = {
 };
 
 var rendererOptions = global.environment.renderer;
-var grainstoreOptions = {
+var talkstoreOptions = {
     carto_env: cartoEnv,
-    datasource: global.environment.postgres,
     cachedir: global.environment.millstone.cache_basedir,
     mapnik_version: global.environment.mapnik_version || mapnik.versions.mapnik
 };
 var rendererFactoryOptions = {
     mapnik: {
-        grainstore: grainstoreOptions,
+        talkstore: talkstoreOptions,
         mapnik: rendererOptions.mapnik
     },
-    torque: rendererOptions.torque,
     http: rendererOptions.http
 };
 
@@ -48,9 +46,8 @@ function TestClient(mapConfig, overrideOptions, onTileErrorStrategy) {
     this.rendererCache = new windshaft.cache.RendererCache(this.rendererFactory);
 
     this.tileBackend = new windshaft.backend.Tile(this.rendererCache);
-    this.attributesBackend = new windshaft.backend.Attributes();
 
-    var mapValidatorBackend = new windshaft.backend.MapValidator(this.tileBackend, this.attributesBackend);
+    var mapValidatorBackend = new windshaft.backend.MapValidator(this.tileBackend);
     var mapStore = new windshaft.storage.MapStore({
         pool: new RedisPool(global.settings.redis)
     });
@@ -66,7 +63,7 @@ TestClient.prototype.getTile = function(z, x, y, options, callback) {
         options = {};
     }
     var params = _.extend({
-        dbname: 'windshaft_test',
+        dbname: 'testdb',
         layer: 'all',
         format: 'png',
         z: z,
@@ -88,25 +85,13 @@ TestClient.prototype.getTile = function(z, x, y, options, callback) {
     });
 };
 
-TestClient.prototype.getFeatureAttributes = function(layer, featureId, callback) {
-    var params = {
-        dbname: 'windshaft_test',
-        layer: layer,
-        fid: featureId
-    };
-    var provider = new DummyMapConfigProvider(this.config, params);
-    this.attributesBackend.getFeatureAttributes(provider, params, false, function(err, attributes, stats) {
-        return callback(err, attributes, stats);
-    });
-};
-
 TestClient.prototype.createLayergroup = function(options, callback) {
     if (!callback) {
         callback = options;
         options = {};
     }
     var params = _.extend({
-        dbname: 'windshaft_test'
+        dbname: 'testdb'
     }, options);
 
     var validatorProvider = new DummyMapConfigProvider(this.config, params);
@@ -136,7 +121,7 @@ TestClient.prototype.getStaticCenter = function(zoom, lon, lat, width, height, c
     var format = 'png';
     var params = {
         layer: 'all',
-        dbname: 'windshaft_test',
+        dbname: 'testdb',
         format: format
     };
     var provider = new DummyMapConfigProvider(this.config, params);
@@ -151,7 +136,7 @@ TestClient.prototype.getStaticBbox = function(west, south, east, north, width, h
     var format = 'png';
     var params = {
         layer: 'all',
-        dbname: 'windshaft_test',
+        dbname: 'testdb',
         format: format
     };
     var provider = new DummyMapConfigProvider(this.config, params);
@@ -179,14 +164,19 @@ var DEFAULT_POINT_STYLE = [
     '}'
 ].join('');
 
-function singleLayerMapConfig(sql, cartocss, cartocssVersion, interactivity) {
+function singleLayerMapConfig(filter, cartocss, cartocssVersion, interactivity) {
     return {
         version: '1.3.0',
         layers: [
             {
-                type: 'mapnik',
+                type: 'maptalks',
                 options: {
-                    sql: sql,
+                    engine_home: '/home/wsw/repos/profile-node-java',
+                    dbname: 'testdb',
+                    layer: 'ne_10m_admin_0_countries',
+                    filter: filter,
+                    page_num: 0,
+                    page_size: 10,
                     cartocss: cartocss || DEFAULT_POINT_STYLE,
                     cartocss_version: cartocssVersion || '2.3.0',
                     interactivity: interactivity
@@ -196,16 +186,12 @@ function singleLayerMapConfig(sql, cartocss, cartocssVersion, interactivity) {
     };
 }
 
-function defaultTableQuery(tableName) {
-    return _.template('SELECT * FROM <%= tableName %>', {tableName: tableName});
-}
-
-function defaultTableMapConfig(tableName, cartocss, cartocssVersion, interactivity) {
-    return singleLayerMapConfig(defaultTableQuery(tableName), cartocss, cartocssVersion, interactivity);
+function defaultTableMapConfig(filter, cartocss, cartocssVersion, interactivity) {
+    return singleLayerMapConfig(filter, cartocss, cartocssVersion, interactivity);
 }
 
 module.exports.singleLayerMapConfig = singleLayerMapConfig;
 module.exports.defaultTableMapConfig = defaultTableMapConfig;
 
-module.exports.grainstoreOptions = grainstoreOptions;
+module.exports.talkstoreOptions = talkstoreOptions;
 module.exports.mapnikOptions = rendererOptions.mapnik;

@@ -13,7 +13,7 @@ describe('mapnik_render_by_format_quality', function() {
     before(function(done) {
         testClient = new TestClient(layergroup, {
             mapnik: {
-                grainstore: _.extend({mapnik_tile_format: 'png8:m=h'}, TestClient.grainstoreOptions)
+                talkstore: _.extend({mapnik_tile_format: 'png8:m=h'}, TestClient.talkstoreOptions)
             }
         });
         var testPngFilesDir = __dirname + '/../results/png';

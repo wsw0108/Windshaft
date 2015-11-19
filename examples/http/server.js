@@ -59,8 +59,8 @@ var MapController = require('./controllers/map');
 module.exports = function(opts) {
     opts = opts || {};
 
-    opts.grainstore = opts.grainstore || {};
-    opts.grainstore.mapnik_version = mapnikVersion(opts);
+    opts.talkstore = opts.talkstore || {};
+    opts.talkstore.mapnik_version = mapnikVersion(opts);
 
     validateOptions(opts);
 
@@ -74,7 +74,7 @@ module.exports = function(opts) {
 
     var map_store  = new windshaft.storage.MapStore({
         pool: redisPool,
-        expire_time: opts.grainstore.default_layergroup_ttl
+        expire_time: opts.talkstore.default_layergroup_ttl
     });
 
     opts.renderer = opts.renderer || {};
@@ -82,7 +82,7 @@ module.exports = function(opts) {
     var rendererFactory = new windshaft.renderer.Factory({
         onTileErrorStrategy: opts.renderer.onTileErrorStrategy,
         mapnik: {
-            grainstore: opts.grainstore,
+            talkstore: opts.talkstore,
             mapnik: opts.renderer.mapnik || opts.mapnik
         },
         torque: opts.renderer.torque,
@@ -193,9 +193,9 @@ function validateOptions(opts) {
     }
 
     // Be nice and warn if configured mapnik version is != instaled mapnik version
-    if (mapnik.versions.mapnik !== opts.grainstore.mapnik_version) {
+    if (mapnik.versions.mapnik !== opts.talkstore.mapnik_version) {
         console.warn('WARNING: detected mapnik version (' + mapnik.versions.mapnik + ')' +
-            ' != configured mapnik version (' + opts.grainstore.mapnik_version + ')');
+            ' != configured mapnik version (' + opts.talkstore.mapnik_version + ')');
     }
 }
 
@@ -206,8 +206,8 @@ function makeRedisPool(redisOpts) {
 
 function bootstrapFonts(opts) {
     // Set carto renderer configuration for MMLStore
-    opts.grainstore.carto_env = opts.grainstore.carto_env || {};
-    var cenv = opts.grainstore.carto_env;
+    opts.talkstore.carto_env = opts.talkstore.carto_env || {};
+    var cenv = opts.talkstore.carto_env;
     cenv.validation_data = cenv.validation_data || {};
     if ( ! cenv.validation_data.fonts ) {
         mapnik.register_system_fonts();
@@ -295,5 +295,5 @@ function statusFromErrorMessage(errMsg) {
 }
 
 function mapnikVersion(opts) {
-    return opts.grainstore.mapnik_version || mapnik.versions.mapnik;
+    return opts.talkstore.mapnik_version || mapnik.versions.mapnik;
 }

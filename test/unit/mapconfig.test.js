@@ -28,7 +28,7 @@ describe('mapconfig', function() {
                     version: '1.3.0',
                     layers: [
                         {
-                            type: 'mapnik'
+                            type: 'maptalks'
                         }
                     ]
                 });
@@ -46,9 +46,10 @@ describe('mapconfig', function() {
             version: '1.3.0',
             layers: [
                 {
-                    type: 'mapnik',
+                    type: 'maptalks',
                     options: {
-                        sql: 'select 1 a, 2 b, null::geometry the_geom',
+                        layer: 'whatever',
+                        filter: 'json string of query filter',
                         cartocss: '#layer{}',
                         cartocss_version: '2.3.0',
                         interactivity: ['a', 'b']
@@ -62,38 +63,4 @@ describe('mapconfig', function() {
         done();
     });
 
-    // See https://github.com/CartoDB/Windshaft/issues/154
-    it('should fail when trying to use attribute service with mapnik tokens', function(done) {
-        var mapConfig =  {
-            version: '1.1.0',
-            layers: [
-                {
-                    options: {
-                        sql: 'select cartodb_id, 1 as n, the_geom, !bbox! as b from test_table limit 1',
-                        cartocss: '#layer { marker-fill:red }',
-                        cartocss_version: '2.0.1',
-                        attributes: {
-                            id:'cartodb_id',
-                            columns:['n']
-                        }
-                    }
-                }
-            ]
-        };
-        assert.throws(
-            function() {
-                MapConfig.create(mapConfig);
-            },
-            function(err) {
-                assert.equal(
-                    err.message,
-                    'Attribute service cannot be activated on layer 0: using dynamic sql (mapnik tokens)'
-                );
-                done();
-                return true;
-            }
-        );
-    });
-
 });
-

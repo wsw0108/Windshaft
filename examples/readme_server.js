@@ -18,9 +18,6 @@ _.extend(global.settings, global.environment);
 var config = {
     base_url: '/database/:dbname/table/:table',
     base_url_mapconfig: '/database/:dbname/layergroup',
-    grainstore: {
-                 datasource: {user:'postgres', host: '127.0.0.1', port: 5432}
-    }, //see grainstore npm for other options
     redis: {host: '127.0.0.1', port: 6379},
     enable_cors: true,
     req2params: function(req, callback){
