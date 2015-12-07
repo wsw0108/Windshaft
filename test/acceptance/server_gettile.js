@@ -1,8 +1,8 @@
 require('../support/test_helper');
 
 var assert = require('../support/assert');
-var mapnik = require('mapnik');
-var semver = require('semver');
+//var mapnik = require('mapnik');
+//var semver = require('semver');
 var TestClient = require('../support/test_client');
 var SphericalMercator = require('sphericalmercator');
 var sm = new SphericalMercator();
