@@ -22,11 +22,10 @@ var talkstoreOptions = {
     mapnik_version: global.environment.mapnik_version || mapnik.versions.mapnik
 };
 var rendererFactoryOptions = {
-    mapnik: {
+    maptalks: {
         talkstore: talkstoreOptions,
         mapnik: rendererOptions.mapnik
-    },
-    http: rendererOptions.http
+    }
 };
 
 function TestClient(mapConfig, overrideOptions, onTileErrorStrategy) {
@@ -52,12 +51,11 @@ function TestClient(mapConfig, overrideOptions, onTileErrorStrategy) {
         pool: new RedisPool(global.settings.redis)
     });
     this.mapBackend = new windshaft.backend.Map(this.rendererCache, mapStore, mapValidatorBackend);
-    this.previewBackend = new windshaft.backend.Preview(this.rendererCache);
 }
 
 module.exports = TestClient;
 
-TestClient.prototype.getTile = function(z, x, y, options, callback) {
+TestClient.prototype.getTile = function(z, res, xmin, ymin, options, callback) {
     if (!callback) {
         callback = options;
         options = {};
@@ -67,13 +65,10 @@ TestClient.prototype.getTile = function(z, x, y, options, callback) {
         layer: 'all',
         format: 'png',
         z: z,
-        x: x,
-        y: y
+        res: res,
+        xmin: xmin,
+        ymin: ymin
     }, options);
-
-    if (params.format === 'grid.json') {
-        params.token = 'wadus';
-    }
 
     var provider = new DummyMapConfigProvider(this.config, params);
     this.tileBackend.getTile(provider, params, function(err, tile, headers, stats) {
@@ -107,48 +102,6 @@ TestClient.prototype.createLayergroup = function(options, callback) {
     });
 };
 
-function previewImageCallbackWrapper(callback) {
-    return function(err, imageBuffer) {
-        var image;
-        if (!err) {
-            image = mapnik.Image.fromBytesSync(new Buffer(imageBuffer, 'binary'));
-        }
-        return callback(err, imageBuffer, image);
-    };
-}
-
-TestClient.prototype.getStaticCenter = function(zoom, lon, lat, width, height, callback) {
-    var format = 'png';
-    var params = {
-        layer: 'all',
-        dbname: 'testdb',
-        format: format
-    };
-    var provider = new DummyMapConfigProvider(this.config, params);
-    var center = {
-        lng: lon,
-        lat: lat
-    };
-    this.previewBackend.getImage(provider, format, width, height, zoom, center, previewImageCallbackWrapper(callback));
-};
-
-TestClient.prototype.getStaticBbox = function(west, south, east, north, width, height, callback) {
-    var format = 'png';
-    var params = {
-        layer: 'all',
-        dbname: 'testdb',
-        format: format
-    };
-    var provider = new DummyMapConfigProvider(this.config, params);
-    var bounds = {
-        west: west,
-        south: south,
-        east: east,
-        north: north
-    };
-    this.previewBackend.getImage(provider, format, width, height, bounds, previewImageCallbackWrapper(callback));
-};
-
 
 var DEFAULT_POINT_STYLE = [
     '#layer {',
@@ -172,7 +125,6 @@ function singleLayerMapConfig(filter, cartocss, cartocssVersion, interactivity) 
                 type: 'maptalks',
                 options: {
                     engine_home: '/home/wsw/repos/profile-node-java',
-                    dbname: 'testdb',
                     layer: 'ne_10m_admin_0_countries',
                     filter: filter,
                     page_num: 0,
@@ -195,3 +147,27 @@ module.exports.defaultTableMapConfig = defaultTableMapConfig;
 
 module.exports.talkstoreOptions = talkstoreOptions;
 module.exports.mapnikOptions = rendererOptions.mapnik;
+
+var resolutions = [
+    156543.0339,
+    78271.51695,
+    39135.758475,
+    19567.8792375,
+    9783.93961875,
+    4891.969809375,
+    2445.9849046875,
+    1222.99245234375,
+    611.496226171875,
+    305.7481130859375,
+    152.87405654296876,
+    76.43702827148438,
+    38.21851413574219,
+    19.109257067871095,
+    9.554628533935547,
+    4.777314266967774,
+    2.388657133483887,
+    1.1943285667419434,
+    0.5971642833709717
+];
+
+module.exports.mercatorResolutions = resolutions;

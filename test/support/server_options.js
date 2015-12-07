@@ -4,7 +4,6 @@ var mapnik = require('mapnik');
 module.exports = (function(opts) {
 
     var config = {
-        base_url: '/database/:dbname/table/:table',
         base_url_mapconfig: '/database/:dbname/layergroup',
         talkstore: {
           cachedir: global.environment.millstone.cache_basedir,

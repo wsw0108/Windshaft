@@ -9,12 +9,12 @@ Renderers are a high level abstraction over lower level rendering functions.
 
 Renderers are expected to expose the following interfaces:
 
-## getTile(z, x, y, callback)
+## getTile(z, res, xmin, ymin, callback)
 
 Get a tile given ZXY params
 
 ```javascript
-getTile(z, x, y, callback)
+getTile(z, res, xmin, ymin, callback)
 ```
  - @param `{Number} z` zoom level
  - @param `{Number} x`

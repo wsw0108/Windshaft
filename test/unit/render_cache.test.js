@@ -203,37 +203,6 @@ describe('render_cache', function() {
         });
     });
 
-    // See https://github.com/Vizzuality/Windshaft/issues/59
-    it('clears both auth and non-auth renderer caches on reset', function(done){
-        var render_cache = makeRenderCache();
-
-        var provider = createMapConfigProvider();
-        render_cache.getRenderer(provider, function(err, renderer){
-            assert.ok(renderer, err);
-            // This needs an existing pg user that can connect to
-            // the database. Failure to connect would result in the
-            // renderer not staying in the cache, as per
-            // http://github.com/CartoDB/Windshaft/issues/171
-            provider = createMapConfigProvider({
-                dbuser: 'test_ws_publicuser',
-                dbpassword: 'public'
-            });
-
-            render_cache.getRenderer(provider, function(/*err, renderer*/) {
-                render_cache.getRenderer(createMapConfigProvider({ token: mapConfig2.id() }), function() {
-                    assert.equal(_.keys(render_cache.renderers).length, 3);
-
-                    render_cache.reset(provider);
-
-                    assert.equal(_.keys(render_cache.renderers).length, 1, _.keys(render_cache.renderers).join('\n'));
-
-                    done();
-                });
-            });
-        });
-    });
-
-
     it('can purge all tilelive objects', function(done){
         var render_cache = makeRenderCache();
 
