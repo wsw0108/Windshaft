@@ -61,7 +61,7 @@ TestClient.prototype.getTile = function(z, res, xmin, ymin, options, callback) {
         options = {};
     }
     var params = _.extend({
-        dbname: 'testdb',
+        dbname: 'testdb-not-used',
         layer: 'all',
         format: 'png',
         z: z,
@@ -86,7 +86,7 @@ TestClient.prototype.createLayergroup = function(options, callback) {
         options = {};
     }
     var params = _.extend({
-        dbname: 'testdb'
+        dbname: 'testdb-not-used'
     }, options);
 
     var validatorProvider = new DummyMapConfigProvider(this.config, params);
@@ -125,6 +125,7 @@ function singleLayerMapConfig(filter, cartocss, cartocssVersion, interactivity) 
                 type: 'maptalks',
                 options: {
                     engine_home: '/home/wsw/repos/profile-node-java',
+                    dbname: 'testdb',
                     layer: 'ne_10m_admin_0_countries',
                     filter: filter,
                     page_num: 0,

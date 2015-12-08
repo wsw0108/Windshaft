@@ -48,6 +48,7 @@ describe('render_cache', function() {
                 options: {
                     // dbname? use merged?
                     engine_home: '/home/wsw/repos/profile-node-java',
+                    dbname: "testdb",
                     layer: 'ne_10m_admin_0_countries',
                     filter: JSON.stringify(queryFilter),
                     page_num: 0,
@@ -65,6 +66,7 @@ describe('render_cache', function() {
                 type: 'maptalks',
                 options: {
                     engine_home: '/home/wsw/repos/profile-node-java',
+                    dbname: "testdb",
                     layer: 'ne_10m_admin_0_countries',
                     filter: JSON.stringify(queryFilter),
                     page_num: 1,
@@ -80,7 +82,7 @@ describe('render_cache', function() {
 
     function requestParams(params) {
         return _.extend({
-            dbname: "testdb",
+            dbname: "testdb-not-used",
             token: mapConfig.id(),
             format: 'png',
             layer: undefined,
