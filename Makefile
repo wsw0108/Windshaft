@@ -1,8 +1,5 @@
 SHELL=/bin/bash
 
-pre-install:
-	@$(SHELL) ./scripts/check-node-canvas.sh
-
 all:
 	@$(SHELL) ./scripts/install.sh
 
