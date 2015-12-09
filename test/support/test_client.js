@@ -18,6 +18,7 @@ var cartoEnv = {
 var rendererOptions = global.environment.renderer;
 var talkstoreOptions = {
     carto_env: cartoEnv,
+    datasource: global.environment.maptalks,
     cachedir: global.environment.millstone.cache_basedir,
     mapnik_version: global.environment.mapnik_version || mapnik.versions.mapnik
 };
@@ -103,17 +104,11 @@ TestClient.prototype.createLayergroup = function(options, callback) {
 };
 
 
-var DEFAULT_POINT_STYLE = [
+var DEFAULT_POLYGON_STYLE = [
     '#layer {',
-    '  marker-fill: #FF6600;',
-    '  marker-opacity: 1;',
-    '  marker-width: 16;',
-    '  marker-line-color: white;',
-    '  marker-line-width: 3;',
-    '  marker-line-opacity: 0.9;',
-    '  marker-placement: point;',
-    '  marker-type: ellipse;',
-    '  marker-allow-overlap: true;',
+    '  polygon-fill: #0000FF;',
+    '  [name="Korea"] { polygon-fill: #00FF00; }',
+    '  line-color: #FF0000;',
     '}'
 ].join('');
 
@@ -130,7 +125,7 @@ function singleLayerMapConfig(filter, cartocss, cartocssVersion, interactivity) 
                     filter: filter,
                     page_num: 0,
                     page_size: 10,
-                    cartocss: cartocss || DEFAULT_POINT_STYLE,
+                    cartocss: cartocss || DEFAULT_POLYGON_STYLE,
                     cartocss_version: cartocssVersion || '2.3.0',
                     interactivity: interactivity
                 }

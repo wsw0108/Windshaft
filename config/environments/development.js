@@ -1,4 +1,7 @@
 module.exports.name = 'development';
+module.exports.maptalks = {
+    srid: 4326
+};
 module.exports.millstone = {
     cache_basedir: '/tmp/windshaft-dev/millstone'
 };
@@ -12,7 +15,7 @@ module.exports.renderer = {
     mapnik: {
         poolSize: 4,//require('os').cpus().length,
         metatile: 1,
-        bufferSize: 64,
+        bufferSize: 1,
         scale_factors: [1, 2],
         limits: {
             render: 0,

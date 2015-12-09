@@ -6,6 +6,7 @@ module.exports = (function(opts) {
     var config = {
         base_url_mapconfig: '/database/:dbname/layergroup',
         talkstore: {
+          datasource: global.environment.maptalks,
           cachedir: global.environment.millstone.cache_basedir,
           mapnik_version: global.environment.mapnik_version || mapnik.versions.mapnik,
           gc_prob: 0 // run the garbage collector at each invocation
