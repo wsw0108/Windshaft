@@ -1,55 +1,54 @@
 {
-    "name": "windshaft",
-    "version": "1.5.1",
-    "main": "./lib/windshaft/index.js",
-    "description": "A Node.js map tile server for MapTalks with CartoCSS styling",
-    "keywords": [
-        "maptalks"
-    ],
-    "url": "https://github.com/wsw0108/Windshaft",
-    "licenses": [
-        {
-            "type": "BSD",
-            "url": "https://github.com/CartoDB/Windshaft/blob/master/LICENSE"
-        }
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/wsw0108/Windshaft.git"
-    },
-    "author": "wsw0108 <wangshiwei@maptalks.org> (http://maptalks.org)",
-    "contributors": [
-        "Simon Tokumine <simon@vizzuality.com>",
-        "Javi Santana <jsantana@vizzuality.com>",
-        "Sandro Santilli <strk@vizzuality.com>",
-        "Raul Ochoa <rochoa@cartodb.com>"
-    ],
-    "dependencies": {
-        "debug": "~2.2.0",
-        "underscore": "~1.6.0",
-        "step": "~0.0.6",
-        "queue-async": "~1.0.7",
-        "mapnik": "https://github.com/CartoDB/node-mapnik/tarball/1.4.15-cdb5",
-        "talkstore": "https://github.com/wsw0108/talkstore/tarball/1.1.1",
-        "tilesource": "https://github.com/wsw0108/tilesource/tarball/master",
-        "tilesource-mapnik": "https://github.com/wsw0108/tilesource-mapnik/tarball/1.0.0",
-        "semver": "~1.1.4",
-        "redis-mpool": "~0.4.0",
-        "carto": "https://github.com/CartoDB/carto/tarball/0.15.1-cdb1"
-    },
-    "devDependencies": {
-        "sphericalmercator": "~1.0.2",
-        "istanbul": "~0.4.0",
-        "express": "~2.5.11",
-        "jshint": "~2.6.0",
-        "mocha": "~1.21.4",
-        "redis": "~0.8.3"
-    },
-    "scripts": {
-        "test": "make test-all"
-    },
-    "engines": {
-        "node": ">=0.8 <0.11",
-        "npm": ">=1.2.1"
+  "name": "windshaft",
+  "version": "1.5.1",
+  "main": "./lib/windshaft/index.js",
+  "description": "A Node.js map tile server for MapTalks with CartoCSS styling",
+  "keywords": [
+    "maptalks"
+  ],
+  "url": "https://github.com/wsw0108/Windshaft",
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "https://github.com/CartoDB/Windshaft/blob/master/LICENSE"
     }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wsw0108/Windshaft.git"
+  },
+  "author": "wsw0108 <wangshiwei@maptalks.org> (http://maptalks.org)",
+  "contributors": [
+    "Simon Tokumine <simon@vizzuality.com>",
+    "Javi Santana <jsantana@vizzuality.com>",
+    "Sandro Santilli <strk@vizzuality.com>",
+    "Raul Ochoa <rochoa@cartodb.com>"
+  ],
+  "dependencies": {
+    "debug": "~2.2.0",
+    "mapnik": "https://github.com/wsw0108/node-mapnik/tarball/3.4.11-maptalks1",
+    "queue-async": "~1.0.7",
+    "semver": "~1.1.4",
+    "step": "~0.0.6",
+    "talkstore": "https://github.com/wsw0108/talkstore/tarball/2.0.0",
+    "tilesource": "https://github.com/wsw0108/tilesource/tarball/5.11.0-maptalks1",
+    "tilesource-mapnik": "https://github.com/wsw0108/tilesource-mapnik/tarball/1.1.1-maptalks1",
+    "underscore": "~1.6.0",
+    "redis-mpool": "https://github.com/wsw0108/node-redis-mpool/tarball/0.4.0-maptalks1"
+  },
+  "devDependencies": {
+    "sphericalmercator": "~1.0.2",
+    "istanbul": "~0.4.0",
+    "express": "~2.5.11",
+    "jshint": "~2.6.0",
+    "mocha": "~1.21.4",
+    "redis": "~0.8.3"
+  },
+  "scripts": {
+    "test": "mocha -u bdd -t 5000"
+  },
+  "engines": {
+    "node": ">=0.8",
+    "npm": ">=1.2.1"
+  }
 }

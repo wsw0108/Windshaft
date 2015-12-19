@@ -119,7 +119,7 @@ function singleLayerMapConfig(filter, cartocss, cartocssVersion, interactivity) 
             {
                 type: 'maptalks',
                 options: {
-                    engine_home: '/home/wsw/repos/profile-node-java',
+                    engine_home: 'M:/engine-server',
                     dbname: 'testdb',
                     layer: 'ne_10m_admin_0_countries',
                     filter: filter,

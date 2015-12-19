@@ -10,7 +10,7 @@ var sm = new SphericalMercator();
 var queryFilter = {
     spatialFilter: {
         // RELATION_WITHIN
-        relation: 5,
+        relation: 1,
         geometry: {
             type: 'Polygon',
             coordinates: [
