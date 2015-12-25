@@ -30,11 +30,11 @@
     "queue-async": "~1.0.7",
     "semver": "~1.1.4",
     "step": "~0.0.6",
-    "talkstore": "https://github.com/wsw0108/talkstore/tarball/2.0.0",
+    "talkstore": "https://github.com/wsw0108/talkstore/tarball/2.1.0",
     "tilesource": "https://github.com/wsw0108/tilesource/tarball/5.11.0-maptalks1",
     "tilesource-mapnik": "https://github.com/wsw0108/tilesource-mapnik/tarball/1.1.1-maptalks1",
     "underscore": "~1.6.0",
-    "redis-mpool": "https://github.com/wsw0108/node-redis-mpool/tarball/0.4.0-maptalks1"
+    "redis-mpool": "https://github.com/wsw0108/node-redis-mpool/tarball/0.4.0-maptalks2"
   },
   "devDependencies": {
     "sphericalmercator": "~1.0.2",
@@ -45,7 +45,7 @@
     "redis": "~0.8.3"
   },
   "scripts": {
-    "test": "mocha -u bdd -t 5000"
+    "test": "mocha -u bdd -t 5000 test/unit/* test/acceptance/*"
   },
   "engines": {
     "node": ">=0.8",

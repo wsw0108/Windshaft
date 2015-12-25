@@ -9,7 +9,7 @@ var sm = new SphericalMercator();
 
 var queryFilter = {
     spatialFilter: {
-        // RELATION_WITHIN
+        // RELATION_CONTAIN
         relation: 1,
         geometry: {
             type: 'Polygon',

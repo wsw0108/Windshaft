@@ -22,8 +22,8 @@ describe('render_cache', function() {
 
     var queryFilter = {
         spatialFilter: {
-            // RELATION_WITHIN
-            relation: 5,
+            // RELATION_CONTAIN
+            relation: 1,
             geometry: {
                 type: 'Polygon',
                 coordinates: [
@@ -46,8 +46,6 @@ describe('render_cache', function() {
             {
                 type: 'maptalks',
                 options: {
-                    // dbname? use merged?
-                    engine_home: 'M:/engine-server',
                     dbname: "testdb",
                     layer: 'ne_10m_admin_0_countries',
                     filter: JSON.stringify(queryFilter),
@@ -65,7 +63,6 @@ describe('render_cache', function() {
             {
                 type: 'maptalks',
                 options: {
-                    engine_home: 'M:/engine-server',
                     dbname: "testdb",
                     layer: 'ne_10m_admin_0_countries',
                     filter: JSON.stringify(queryFilter),
